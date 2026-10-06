@@ -68,7 +68,7 @@ export default function Layout() {
       </aside>
 
       {/* Topo (celular) */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 backdrop-blur md:hidden">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-sm md:hidden">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/10 text-brand">
             <TrendingUp className="h-4 w-4" />
@@ -93,7 +93,7 @@ export default function Layout() {
 
       {/* Barra inferior (celular) */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm md:hidden"
         aria-label="Principal"
       >
         {NAV.map(({ to, short, icon: Icon, end }) => (

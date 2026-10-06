@@ -81,7 +81,7 @@ export default function DashboardPage() {
 
       {/* Saldo + Reserva */}
       <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-        <section className="relative overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/[0.14] via-card to-card p-6 sm:p-7">
+        <section className="relative overflow-hidden rounded-2xl border border-accent/40 bg-linear-to-br from-accent/[0.14] via-card to-card p-6 sm:p-7">
           <div className="flex items-center justify-between">
             <p className="eyebrow">Saldo atual</p>
             <Wallet className="h-5 w-5 text-accent" />

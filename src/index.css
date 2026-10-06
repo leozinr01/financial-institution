@@ -1,8 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0a0a0a;
+  --color-card: #141414;
+  --color-line: #242424;
+  --color-brand: #22c55e;
+  --color-accent: #eab308;
+  --color-danger: #ef4444;
+
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
 
 @layer base {
+  /* Mantém os padrões do Tailwind v3 (cor de borda, placeholder e cursor de botão) */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+    color: var(--color-gray-400);
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
   html {
     color-scheme: dark;
   }
@@ -21,7 +49,7 @@
 
 @layer components {
   .field {
-    @apply h-11 w-full rounded-xl border border-line bg-bg px-3.5 text-sm text-neutral-100 outline-none transition placeholder:text-neutral-600 focus:border-brand/60 focus:ring-2 focus:ring-brand/15 disabled:opacity-50;
+    @apply h-11 w-full rounded-xl border border-line bg-bg px-3.5 text-sm text-neutral-100 outline-hidden transition placeholder:text-neutral-600 focus:border-brand/60 focus:ring-2 focus:ring-brand/15 disabled:opacity-50;
   }
   .field-label {
     @apply mb-1.5 block text-xs font-medium text-neutral-400;

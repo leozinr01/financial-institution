@@ -182,7 +182,7 @@ export function Modal({ open, title, eyebrow, onClose, children }: { open: boole
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-xs" onClick={onClose} />
       <div className="animate-fade-in relative max-h-[92dvh] w-full overflow-y-auto rounded-t-3xl border border-line bg-card p-6 sm:max-w-md sm:rounded-3xl">
         <div className="mb-5 flex items-start justify-between gap-3">
           <div>
