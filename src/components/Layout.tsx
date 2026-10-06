@@ -86,7 +86,7 @@ export default function Layout() {
       </header>
 
       <div className="md:pl-[72px]">
-        <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 md:px-10 md:pb-12 md:pt-10">
+        <main className="px-4 pb-28 pt-6 sm:px-6 md:px-8 md:pb-12 md:pt-8">
           {loading ? <Spinner label="Carregando seus dados…" /> : error ? <ErrorBox message={error} onRetry={reload} /> : <Outlet />}
         </main>
       </div>
