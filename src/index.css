@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-bg font-sans text-neutral-200 antialiased;
+    font-feature-settings: 'tnum';
+  }
+  ::selection {
+    @apply bg-brand/30;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(0.6);
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .field {
+    @apply h-11 w-full rounded-xl border border-line bg-bg px-3.5 text-sm text-neutral-100 outline-none transition placeholder:text-neutral-600 focus:border-brand/60 focus:ring-2 focus:ring-brand/15 disabled:opacity-50;
+  }
+  .field-label {
+    @apply mb-1.5 block text-xs font-medium text-neutral-400;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes spark {
+  0% { opacity: 0; transform: translateY(8px) scale(0.6); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-26px) scale(1.1); }
+}
+.animate-fade-in { animation: fade-in 0.25s ease-out both; }
+.spark { animation: spark 2.4s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .spark { animation: none; }
+  .spark { opacity: 0.7; }
+}
+
+.recharts-surface, .recharts-wrapper *:focus { outline: none; }
