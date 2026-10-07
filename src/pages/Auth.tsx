@@ -111,6 +111,7 @@ function Notice({ title, text }: { title: string; text: string }) {
 }
 
 const link = 'font-medium text-brand hover:underline'
+const MIN_PASSWORD = 8
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 
 export function LoginPage() {
@@ -171,7 +172,7 @@ export function RegisterPage() {
     if (!name.trim()) return setError('Informe seu nome.')
     if (!surname.trim()) return setError('Informe seu sobrenome.')
     if (!isEmail(email.trim())) return setError('Informe um e-mail válido.')
-    if (password.length < 6) return setError('A senha precisa ter pelo menos 6 caracteres.')
+    if (password.length < MIN_PASSWORD) return setError(`A senha precisa ter pelo menos ${MIN_PASSWORD} caracteres.`)
     if (password !== confirm) return setError('As senhas não conferem.')
     setError('')
     setLoading(true)
@@ -209,7 +210,7 @@ export function RegisterPage() {
           </div>
           <div>
             <label className="field-label" htmlFor="password">Senha</label>
-            <PasswordInput id="password" autoComplete="new-password" className="field" placeholder="Mínimo de 6 caracteres" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <PasswordInput id="password" autoComplete="new-password" className="field" placeholder={`Mínimo de ${MIN_PASSWORD} caracteres`} value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div>
             <label className="field-label" htmlFor="confirm">Confirmar senha</label>
@@ -274,7 +275,7 @@ export function ResetPasswordPage() {
 
   async function submit(e: FormEvent) {
     e.preventDefault()
-    if (password.length < 6) return setError('A senha precisa ter pelo menos 6 caracteres.')
+    if (password.length < MIN_PASSWORD) return setError(`A senha precisa ter pelo menos ${MIN_PASSWORD} caracteres.`)
     if (password !== confirm) return setError('As senhas não conferem.')
     setError('')
     setLoading(true)

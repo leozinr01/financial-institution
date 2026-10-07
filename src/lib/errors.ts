@@ -2,7 +2,7 @@ const AUTH_MESSAGES: Array<[RegExp, string]> = [
   [/invalid login credentials/i, 'E-mail ou senha incorretos.'],
   [/email not confirmed/i, 'Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.'],
   [/user already registered/i, 'Já existe uma conta com este e-mail.'],
-  [/password should be at least/i, 'A senha precisa ter pelo menos 6 caracteres.'],
+  [/password should be at least/i, 'A senha precisa ter pelo menos 8 caracteres.'],
   [/should be different from the old password/i, 'A nova senha precisa ser diferente da anterior.'],
   [/unable to validate email|invalid email|is invalid/i, 'Informe um e-mail válido.'],
   [/rate limit|security purposes|too many requests/i, 'Muitas tentativas. Aguarde um instante e tente de novo.'],

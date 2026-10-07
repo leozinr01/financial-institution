@@ -45,6 +45,22 @@ create table if not exists public.settings (
   initial_balance numeric(12,2) not null default 0
 );
 
+-- Uma transação só pode usar categoria do mesmo usuário. A chave composta
+-- vale mesmo para quem tenta apontar para o id de uma categoria alheia.
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'categories_id_user_id_key') then
+    alter table public.categories
+      add constraint categories_id_user_id_key unique (id, user_id);
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'transactions_category_owner_fkey') then
+    alter table public.transactions
+      add constraint transactions_category_owner_fkey
+      foreign key (category_id, user_id) references public.categories (id, user_id)
+      on delete set null (category_id);
+  end if;
+end $$;
+
 -- ---------------------------------------------------------------------
 -- Índices
 -- ---------------------------------------------------------------------
