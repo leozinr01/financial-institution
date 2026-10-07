@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MailCheck, TrendingUp } from 'lucide-react'
-import { Button } from '../components/ui'
+import { Button, useToast } from '../components/ui'
 import { useAuth } from '../contexts/AuthContext'
 import { errorMessage } from '../lib/errors'
 import * as auth from '../services/auth'
@@ -92,6 +92,7 @@ export function RegisterPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
+  const toast = useToast()
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -102,7 +103,8 @@ export function RegisterPage() {
     setLoading(true)
     try {
       const loggedIn = await auth.signUp(email.trim(), password)
-      if (!loggedIn) setSent(true)
+      if (loggedIn) toast.success('Cadastrado com sucesso!')
+      else setSent(true)
     } catch (err) {
       setError(errorMessage(err, 'Não foi possível criar a conta.'))
     } finally {
