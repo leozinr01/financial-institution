@@ -16,7 +16,7 @@ export function downloadExport(data: Omit<ExportPayload, 'exported_at'>): void {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `financas-pessoais-${payload.exported_at.slice(0, 10)}.json`
+  a.download = `gastei-tudo-${payload.exported_at.slice(0, 10)}.json`
   document.body.appendChild(a)
   a.click()
   a.remove()

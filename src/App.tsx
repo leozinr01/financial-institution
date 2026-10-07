@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import { Spinner, ToastProvider } from './components/ui'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
@@ -7,15 +7,17 @@ import { isSupabaseConfigured } from './lib/supabase'
 import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from './pages/Auth'
 import CashFlowPage from './pages/CashFlow'
 import DashboardPage from './pages/Dashboard'
+import LandingPage from './pages/Landing'
 import SettingsPage from './pages/Settings'
 import TransactionsPage from './pages/Transactions'
 import WeeklyGoalPage from './pages/WeeklyGoal'
 
-/** Área logada: sem sessão, manda para o login. */
+/** Área logada: sem sessão, mostra a página inicial em "/" e manda as outras rotas para o login. */
 function ProtectedArea() {
   const { user, loading } = useAuth()
+  const { pathname } = useLocation()
   if (loading) return <Spinner />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return pathname === '/' ? <LandingPage /> : <Navigate to="/login" replace />
   return (
     <DataProvider key={user.id} userId={user.id}>
       <Layout />

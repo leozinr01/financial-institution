@@ -1,4 +1,4 @@
-# Finanças Pessoais
+# Gastei Tudo
 
 Sistema web de finanças pessoais: entradas e saídas, fluxo de caixa e meta semanal de poupança.
 

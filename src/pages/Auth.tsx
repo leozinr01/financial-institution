@@ -1,6 +1,6 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type FormEvent, type InputHTMLAttributes, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { MailCheck, TrendingUp } from 'lucide-react'
+import { Check, Eye, EyeOff, MailCheck, TrendingUp } from 'lucide-react'
 import { Button, useToast } from '../components/ui'
 import { useAuth } from '../contexts/AuthContext'
 import { errorMessage } from '../lib/errors'
@@ -10,24 +10,94 @@ function AuthShell({ eyebrow, title, subtitle, children, footer }: {
   eyebrow: string; title: string; subtitle: string; children: ReactNode; footer?: ReactNode
 }) {
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4 py-10">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 flex h-11 w-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
-          <TrendingUp className="h-5 w-5" />
+    <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
+      {/* Painel da marca (desktop) */}
+      <aside className="relative hidden flex-col justify-between overflow-hidden border-r border-line p-12 lg:flex">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_80%_70%_at_30%_20%,black,transparent)]" />
+          <div className="absolute -left-24 -top-32 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+          <div className="absolute -bottom-24 right-0 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
         </div>
-        <p className="eyebrow mb-1.5">{eyebrow}</p>
-        <h1 className="font-serif text-3xl text-neutral-50">{title}</h1>
-        <p className="mt-2 text-sm text-neutral-500">{subtitle}</p>
-        <div className="mt-8 rounded-2xl border border-line bg-card p-6">{children}</div>
-        {footer && <div className="mt-6 text-center text-sm text-neutral-500">{footer}</div>}
-      </div>
+        <Link to="/" className="relative"><Brand /></Link>
+        <div className="relative">
+          <h2 className="font-serif text-5xl leading-[1.08] text-neutral-50">
+            Gastei tudo. <span className="block italic text-accent">Mas em quê?</span>
+          </h2>
+          <ul className="mt-8 space-y-3.5 text-sm text-neutral-300">
+            {BENEFITS.map((benefit) => (
+              <li key={benefit} className="flex items-center gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                </span>
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="relative rounded-2xl border border-line bg-card/80 p-5 backdrop-blur-sm" aria-hidden>
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold uppercase tracking-[0.14em] text-neutral-500">Meta da semana · exemplo</span>
+            <span className="font-semibold text-accent">72%</span>
+          </div>
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-line">
+            <div className="h-full w-[72%] rounded-full bg-accent" />
+          </div>
+          <p className="mt-3 text-sm text-neutral-400"><span className="font-semibold text-neutral-100">R$ 180</span> de R$ 250 guardados</p>
+        </div>
+      </aside>
+
+      <main className="flex items-center justify-center px-4 py-10 sm:px-8">
+        <div className="animate-fade-in w-full max-w-sm">
+          <Link to="/" className="mb-10 inline-block lg:hidden"><Brand /></Link>
+          <p className="eyebrow mb-2">{eyebrow}</p>
+          <h1 className="font-serif text-4xl text-neutral-50">{title}</h1>
+          <p className="mt-2.5 text-sm leading-relaxed text-neutral-400">{subtitle}</p>
+          <div className="mt-8">{children}</div>
+          {footer && <div className="mt-8 border-t border-line pt-6 text-center text-sm text-neutral-500">{footer}</div>}
+        </div>
+      </main>
+    </div>
+  )
+}
+
+const BENEFITS = [
+  'Veja para onde o dinheiro foi, categoria por categoria',
+  'Acompanhe o saldo mês a mês',
+  'Guarde um pouco toda semana',
+]
+
+function Brand() {
+  return (
+    <span className="flex items-center gap-2.5">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10 text-accent">
+        <TrendingUp className="h-4 w-4" />
+      </span>
+      <span className="font-serif text-lg text-neutral-50">Gastei Tudo</span>
+    </span>
+  )
+}
+
+/** Campo de senha com botão para mostrar ou esconder o que foi digitado. */
+function PasswordInput({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  const [visible, setVisible] = useState(false)
+  return (
+    <div className="relative">
+      <input {...props} type={visible ? 'text' : 'password'} className={`${className ?? ''} pr-11`} />
+      <button
+        type="button"
+        onClick={() => setVisible((value) => !value)}
+        aria-label={visible ? 'Esconder senha' : 'Mostrar senha'}
+        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-neutral-500 transition hover:text-neutral-200"
+      >
+        {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+      </button>
     </div>
   )
 }
 
 function FormError({ message }: { message: string }) {
   if (!message) return null
-  return <p className="rounded-lg border border-danger/30 bg-danger/5 px-3 py-2 text-xs text-danger" role="alert">{message}</p>
+  return <p className="rounded-xl border border-danger/30 bg-danger/5 px-3.5 py-2.5 text-sm text-danger" role="alert">{message}</p>
 }
 
 function Notice({ title, text }: { title: string; text: string }) {
@@ -64,7 +134,7 @@ export function LoginPage() {
   }
 
   return (
-    <AuthShell eyebrow="Bem-vinda de volta" title="Entrar" subtitle="Acompanhe seu dinheiro e sua meta da semana."
+    <AuthShell eyebrow="Que bom te ver de novo" title="Entrar" subtitle="Acompanhe seu dinheiro e sua meta da semana."
       footer={<>Ainda não tem conta? <Link className={link} to="/cadastro">Criar conta</Link></>}>
       <form onSubmit={submit} className="space-y-4" noValidate>
         <div>
@@ -76,7 +146,7 @@ export function LoginPage() {
             <label className="field-label" htmlFor="password">Senha</label>
             <Link className="mb-1.5 text-xs text-neutral-500 hover:text-brand" to="/recuperar-senha">Esqueci minha senha</Link>
           </div>
-          <input id="password" type="password" autoComplete="current-password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <PasswordInput id="password" autoComplete="current-password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <FormError message={error} />
         <Button type="submit" loading={loading} className="w-full">Entrar</Button>
@@ -139,11 +209,11 @@ export function RegisterPage() {
           </div>
           <div>
             <label className="field-label" htmlFor="password">Senha</label>
-            <input id="password" type="password" autoComplete="new-password" className="field" placeholder="Mínimo de 6 caracteres" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <PasswordInput id="password" autoComplete="new-password" className="field" placeholder="Mínimo de 6 caracteres" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div>
             <label className="field-label" htmlFor="confirm">Confirmar senha</label>
-            <input id="confirm" type="password" autoComplete="new-password" className="field" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+            <PasswordInput id="confirm" autoComplete="new-password" className="field" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
           </div>
           <FormError message={error} />
           <Button type="submit" loading={loading} className="w-full">Criar conta</Button>
@@ -228,11 +298,11 @@ export function ResetPasswordPage() {
         <form onSubmit={submit} className="space-y-4" noValidate>
           <div>
             <label className="field-label" htmlFor="password">Nova senha</label>
-            <input id="password" type="password" autoComplete="new-password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <PasswordInput id="password" autoComplete="new-password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div>
             <label className="field-label" htmlFor="confirm">Confirmar nova senha</label>
-            <input id="confirm" type="password" autoComplete="new-password" className="field" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+            <PasswordInput id="confirm" autoComplete="new-password" className="field" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
           </div>
           <FormError message={error} />
           <Button type="submit" loading={loading || authLoading} className="w-full">Salvar nova senha</Button>

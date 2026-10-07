@@ -120,7 +120,7 @@ export default function SettingsPage() {
 
         <Card>
           <CardTitle eyebrow="Conta" title="Seus dados" />
-          <p className="text-sm text-neutral-400">Conectada como <span className="break-all text-neutral-100">{user?.email}</span></p>
+          <p className="text-sm text-neutral-400">Você entrou como<span className="break-all text-neutral-100">{user?.email}</span></p>
           <form onSubmit={handleSaveName} className="mt-5">
             <label className="field-label" htmlFor="name">Seu nome</label>
             <div className="flex gap-2">
