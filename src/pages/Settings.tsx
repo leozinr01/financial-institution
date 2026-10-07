@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useData } from '../contexts/DataContext'
 import { errorMessage } from '../lib/errors'
 import { downloadExport } from '../services/account'
-import { signOut } from '../services/auth'
+import { displayName, signOut, updateName } from '../services/auth'
 
 const CONFIRM_WORD = 'APAGAR'
 
@@ -21,6 +21,11 @@ export default function SettingsPage() {
   const [resetOpen, setResetOpen] = useState(false)
   const [confirmText, setConfirmText] = useState('')
   const [resetting, setResetting] = useState(false)
+  const savedName = displayName(user)
+  const [name, setName] = useState(savedName)
+  const [savingName, setSavingName] = useState(false)
+
+  useEffect(() => setName(savedName), [savedName])
 
   useEffect(() => {
     setGoal(settings.weekly_goal)
@@ -41,6 +46,19 @@ export default function SettingsPage() {
       toast.error(errorMessage(err, 'Não foi possível salvar as configurações.'))
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleSaveName(e: FormEvent) {
+    e.preventDefault()
+    setSavingName(true)
+    try {
+      await updateName(name.trim())
+      toast.success('Nome salvo.')
+    } catch (err) {
+      toast.error(errorMessage(err, 'Não foi possível salvar o nome.'))
+    } finally {
+      setSavingName(false)
     }
   }
 
@@ -103,6 +121,13 @@ export default function SettingsPage() {
         <Card>
           <CardTitle eyebrow="Conta" title="Seus dados" />
           <p className="text-sm text-neutral-400">Conectada como <span className="break-all text-neutral-100">{user?.email}</span></p>
+          <form onSubmit={handleSaveName} className="mt-5">
+            <label className="field-label" htmlFor="name">Seu nome</label>
+            <div className="flex gap-2">
+              <input id="name" type="text" autoComplete="given-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
+              <Button type="submit" variant="secondary" loading={savingName} disabled={!name.trim() || name.trim() === savedName}>Salvar</Button>
+            </div>
+          </form>
           <div className="mt-5 space-y-4">
             <div className="flex flex-col gap-3 rounded-xl border border-line bg-bg p-4 sm:flex-row sm:items-center">
               <div className="flex-1">

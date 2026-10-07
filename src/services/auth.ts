@@ -1,4 +1,4 @@
-import type { Session } from '@supabase/supabase-js'
+import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
 export async function signIn(email: string, password: string): Promise<void> {
@@ -7,11 +7,11 @@ export async function signIn(email: string, password: string): Promise<void> {
 }
 
 /** Retorna true se a conta já entrou logada; false se precisa confirmar o e-mail antes. */
-export async function signUp(email: string, password: string): Promise<boolean> {
+export async function signUp(name: string, email: string, password: string): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { emailRedirectTo: window.location.origin },
+    options: { emailRedirectTo: window.location.origin, data: { name } },
   })
   if (error) throw error
   // Com confirmação de e-mail ligada, um e-mail já cadastrado volta sem "identities".
@@ -36,6 +36,17 @@ export async function sendPasswordReset(email: string): Promise<void> {
 export async function updatePassword(password: string): Promise<void> {
   const { error } = await supabase.auth.updateUser({ password })
   if (error) throw error
+}
+
+export async function updateName(name: string): Promise<void> {
+  const { error } = await supabase.auth.updateUser({ data: { name } })
+  if (error) throw error
+}
+
+/** Nome salvo no cadastro; contas antigas sem nome usam o começo do e-mail. */
+export function displayName(user: User | null): string {
+  const name = typeof user?.user_metadata?.name === 'string' ? user.user_metadata.name.trim() : ''
+  return name || user?.email?.split('@')[0] || ''
 }
 
 export async function getSession(): Promise<Session | null> {

@@ -86,6 +86,7 @@ export function LoginPage() {
 }
 
 export function RegisterPage() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -96,13 +97,14 @@ export function RegisterPage() {
 
   async function submit(e: FormEvent) {
     e.preventDefault()
+    if (!name.trim()) return setError('Informe seu nome.')
     if (!isEmail(email.trim())) return setError('Informe um e-mail válido.')
     if (password.length < 6) return setError('A senha precisa ter pelo menos 6 caracteres.')
     if (password !== confirm) return setError('As senhas não conferem.')
     setError('')
     setLoading(true)
     try {
-      const loggedIn = await auth.signUp(email.trim(), password)
+      const loggedIn = await auth.signUp(name.trim(), email.trim(), password)
       if (loggedIn) toast.success('Cadastrado com sucesso!')
       else setSent(true)
     } catch (err) {
@@ -119,6 +121,10 @@ export function RegisterPage() {
         <Notice title="Confirme seu e-mail" text={`Enviamos um link de confirmação para ${email.trim()}. Abra o link e depois entre com sua senha.`} />
       ) : (
         <form onSubmit={submit} className="space-y-4" noValidate>
+          <div>
+            <label className="field-label" htmlFor="name">Nome</label>
+            <input id="name" type="text" autoComplete="given-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
           <div>
             <label className="field-label" htmlFor="email">E-mail</label>
             <input id="email" type="email" autoComplete="email" className="field" value={email} onChange={(e) => setEmail(e.target.value)} />
