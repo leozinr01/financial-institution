@@ -124,7 +124,7 @@ export default function SettingsPage() {
           <form onSubmit={handleSaveName} className="mt-5">
             <label className="field-label" htmlFor="name">Seu nome</label>
             <div className="flex gap-2">
-              <input id="name" type="text" autoComplete="given-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
+              <input id="name" type="text" autoComplete="name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
               <Button type="submit" variant="secondary" loading={savingName} disabled={!name.trim() || name.trim() === savedName}>Salvar</Button>
             </div>
           </form>

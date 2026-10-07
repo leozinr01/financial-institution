@@ -87,6 +87,7 @@ export function LoginPage() {
 
 export function RegisterPage() {
   const [name, setName] = useState('')
+  const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -98,13 +99,14 @@ export function RegisterPage() {
   async function submit(e: FormEvent) {
     e.preventDefault()
     if (!name.trim()) return setError('Informe seu nome.')
+    if (!surname.trim()) return setError('Informe seu sobrenome.')
     if (!isEmail(email.trim())) return setError('Informe um e-mail válido.')
     if (password.length < 6) return setError('A senha precisa ter pelo menos 6 caracteres.')
     if (password !== confirm) return setError('As senhas não conferem.')
     setError('')
     setLoading(true)
     try {
-      const loggedIn = await auth.signUp(name.trim(), email.trim(), password)
+      const loggedIn = await auth.signUp(`${name.trim()} ${surname.trim()}`, email.trim(), password)
       if (loggedIn) toast.success('Cadastrado com sucesso!')
       else setSent(true)
     } catch (err) {
@@ -121,9 +123,15 @@ export function RegisterPage() {
         <Notice title="Confirme seu e-mail" text={`Enviamos um link de confirmação para ${email.trim()}. Abra o link e depois entre com sua senha.`} />
       ) : (
         <form onSubmit={submit} className="space-y-4" noValidate>
-          <div>
-            <label className="field-label" htmlFor="name">Nome</label>
-            <input id="name" type="text" autoComplete="given-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="field-label" htmlFor="name">Nome</label>
+              <input id="name" type="text" autoComplete="given-name" className="field" value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div>
+              <label className="field-label" htmlFor="surname">Sobrenome</label>
+              <input id="surname" type="text" autoComplete="family-name" className="field" value={surname} onChange={(e) => setSurname(e.target.value)} />
+            </div>
           </div>
           <div>
             <label className="field-label" htmlFor="email">E-mail</label>
