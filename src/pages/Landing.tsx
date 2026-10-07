@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowDownLeft, ArrowRight, ArrowUpRight, Download, Lock, Trash2, TrendingUp, type LucideIcon } from 'lucide-react'
+import { ArrowDownLeft, ArrowRight, ArrowUp, ArrowUpRight, Download, Lock, Trash2, TrendingUp, type LucideIcon } from 'lucide-react'
 import { cx } from '../components/ui'
 
 const container = 'mx-auto w-full max-w-6xl px-5 sm:px-8'
-const pill = 'inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition'
+const pill = 'inline-flex h-11 shrink-0 items-center whitespace-nowrap justify-center gap-2 rounded-full px-6 text-sm font-semibold transition'
 const card = 'rounded-3xl border border-line bg-card'
 const label = 'text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-500'
+const footerLink = 'transition hover:text-neutral-100'
 
 /* Números de exemplo usados nas prévias. */
 const SPENDING = [
@@ -52,10 +53,10 @@ function scrollToTop() {
 function Brand({ small }: { small?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
-      <span className={cx('flex items-center justify-center rounded-xl bg-accent/10 text-accent', small ? 'h-7 w-7' : 'h-9 w-9')}>
+      <span className={cx('flex items-center justify-center rounded-xl bg-accent/10 text-accent', small ? 'h-7 w-7' : 'h-8 w-8 sm:h-9 sm:w-9')}>
         <TrendingUp className={small ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
       </span>
-      <span className={cx('font-serif text-neutral-50', small ? 'text-base' : 'text-lg')}>Gastei Tudo</span>
+      <span className={cx('whitespace-nowrap font-serif text-neutral-50', small ? 'text-base' : 'text-base sm:text-lg')}>Gastei Tudo</span>
     </span>
   )
 }
@@ -78,9 +79,9 @@ function MonthPreview() {
           <p className={label}>Para onde foi · exemplo</p>
           <p className="mt-1.5 font-serif text-3xl text-neutral-50 sm:text-4xl">R$ 4.832</p>
         </div>
-        <div className="flex divide-x divide-line">
+        <div className="flex w-full divide-x divide-line sm:w-auto">
           {TOTALS.map((total) => (
-            <div key={total.name} className="px-4 first:pl-0 last:pr-0">
+            <div key={total.name} className="flex-1 px-3 first:pl-0 last:pr-0 sm:flex-none sm:px-4">
               <p className={label}>{total.name}</p>
               <p className={cx('mt-1 text-sm font-semibold', total.tone)}>{total.value}</p>
             </div>
@@ -92,7 +93,7 @@ function MonthPreview() {
           <div key={item.name} className={cx('h-full first:rounded-l-full last:rounded-r-full', item.color)} style={{ width: `${item.share}%` }} />
         ))}
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 min-[460px]:grid-cols-2 sm:grid-cols-3">
         {SPENDING.map((item) => (
           <div key={item.name} className="flex items-center gap-2.5 text-sm">
             <span className={cx('h-2.5 w-2.5 shrink-0 rounded-full', item.color)} />
@@ -155,14 +156,14 @@ export default function LandingPage() {
   return (
     <div className="min-h-dvh overflow-x-clip">
       <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-md">
-        <div className={cx(container, 'flex h-16 items-center justify-between gap-4')}>
+        <div className={cx(container, 'flex h-16 items-center justify-between gap-2 sm:gap-4')}>
           <Link to="/" onClick={scrollToTop} aria-label="Gastei Tudo — voltar ao início da página"><Brand /></Link>
           <nav className="flex items-center gap-1 sm:gap-2" aria-label="Principal">
             <a className="hidden rounded-full px-3.5 py-2 text-sm text-neutral-400 transition hover:text-neutral-100 md:block" href="#recursos">Recursos</a>
             <a className="hidden rounded-full px-3.5 py-2 text-sm text-neutral-400 transition hover:text-neutral-100 md:block" href="#como-funciona">Como funciona</a>
             <a className="hidden rounded-full px-3.5 py-2 text-sm text-neutral-400 transition hover:text-neutral-100 md:block" href="#seguranca">Segurança</a>
-            <Link to="/login" className="rounded-full px-3.5 py-2 text-sm font-medium text-neutral-200 transition hover:text-white">Entrar</Link>
-            <Link to="/cadastro" className={cx(pill, 'h-10 bg-accent px-5 text-black hover:bg-yellow-400')}>Criar conta</Link>
+            <Link to="/login" className="whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium text-neutral-200 transition hover:text-white sm:px-3.5">Entrar</Link>
+            <Link to="/cadastro" className={cx(pill, 'h-9 bg-accent px-3.5 text-black hover:bg-yellow-400 sm:h-10 sm:px-5')}>Criar conta</Link>
           </nav>
         </div>
       </header>
@@ -175,29 +176,29 @@ export default function LandingPage() {
             <div className="absolute left-[12%] top-[18rem] h-72 w-72 rounded-full bg-brand/10 blur-3xl" />
           </div>
 
-          <div className={cx(container, 'pb-20 pt-16 text-center sm:pt-24')}>
+          <div className={cx(container, 'pb-14 pt-12 text-center sm:pb-20 sm:pt-24')}>
             <p className="animate-fade-in inline-flex items-center gap-2 rounded-full border border-line bg-card/70 px-4 py-1.5 text-xs text-neutral-300">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Controle financeiro sem planilha
             </p>
-            <h1 className="animate-fade-in mx-auto mt-7 max-w-3xl font-serif text-5xl leading-[1.05] text-neutral-50 sm:text-7xl">
+            <h1 className="animate-fade-in mx-auto mt-7 max-w-3xl font-serif text-[2.75rem] leading-[1.05] text-neutral-50 sm:text-7xl">
               Gastei tudo. <span className="block italic text-accent">Mas em quê?</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-neutral-400">
               Anote o que entra e o que sai, veja para onde o dinheiro foi e guarde um pouco toda semana.
             </p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link to="/cadastro" className={cx(pill, 'h-12 bg-accent px-7 text-black shadow-lg shadow-accent/20 hover:bg-yellow-400')}>
                 Começar agora <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/login" className={cx(pill, 'h-12 border border-line px-7 text-neutral-200 hover:border-neutral-600')}>Já tenho conta</Link>
             </div>
-            <div className="mt-16">
+            <div className="mt-12 sm:mt-16">
               <MonthPreview />
             </div>
           </div>
         </section>
 
-        <section id="recursos" className="scroll-mt-20 py-20 sm:py-24">
+        <section id="recursos" className="scroll-mt-20 py-14 sm:py-24">
           <div className={container}>
             <SectionTitle eyebrow="Recursos">Tudo o que o seu mês precisa, <span className="block italic text-neutral-400">e nada além.</span></SectionTitle>
             <div className="mt-12 grid gap-4 lg:grid-cols-3">
@@ -249,7 +250,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="como-funciona" className="scroll-mt-20 py-20 sm:py-24">
+        <section id="como-funciona" className="scroll-mt-20 py-14 sm:py-24">
           <div className={container}>
             <SectionTitle eyebrow="Como funciona">Três passos e o mês fica claro.</SectionTitle>
             <ol className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
@@ -265,7 +266,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="seguranca" className="scroll-mt-20 py-20 sm:py-24">
+        <section id="seguranca" className="scroll-mt-20 py-14 sm:py-24">
           <div className={container}>
             <div className={cx(card, 'grid gap-10 p-7 sm:p-10 lg:grid-cols-[1fr_1.4fr] lg:items-center')}>
               <div>
@@ -289,9 +290,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="pb-24 pt-4">
+        <section className="pb-16 pt-4 sm:pb-24">
           <div className={container}>
-            <div className="relative overflow-hidden rounded-[2rem] border border-accent/25 bg-card px-6 py-16 text-center sm:py-20">
+            <div className="relative overflow-hidden rounded-[2rem] border border-accent/25 bg-card px-6 py-14 text-center sm:py-20">
               <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/15 blur-3xl" aria-hidden />
               <h2 className="relative mx-auto max-w-xl font-serif text-3xl leading-tight text-neutral-50 sm:text-5xl">
                 No mês que vem, <span className="block italic text-accent">você vai saber.</span>
@@ -305,12 +306,40 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-line py-8">
-        <div className={cx(container, 'flex flex-col items-center justify-between gap-4 text-sm text-neutral-500 sm:flex-row')}>
-          <Link to="/" onClick={scrollToTop} aria-label="Gastei Tudo — voltar ao início da página"><Brand small /></Link>
-          <div className="flex items-center gap-6">
-            <Link className="transition hover:text-neutral-200" to="/login">Entrar</Link>
-            <Link className="transition hover:text-neutral-200" to="/cadastro">Criar conta</Link>
+      <footer className="border-t border-line">
+        <div className={cx(container, 'grid grid-cols-2 gap-x-8 gap-y-10 py-12 md:grid-cols-[1.6fr_1fr_1fr] md:py-14')}>
+          <div className="col-span-2 md:col-span-1">
+            <Link to="/" onClick={scrollToTop} className="inline-block" aria-label="Gastei Tudo — voltar ao início da página"><Brand /></Link>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-500">
+              Controle financeiro simples: saiba para onde o dinheiro vai e guarde um pouco toda semana.
+            </p>
+          </div>
+          <nav aria-label="Produto">
+            <p className={label}>Produto</p>
+            <ul className="mt-4 space-y-3 text-sm text-neutral-400">
+              <li><a className={footerLink} href="#recursos">Recursos</a></li>
+              <li><a className={footerLink} href="#como-funciona">Como funciona</a></li>
+              <li><a className={footerLink} href="#seguranca">Segurança</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="Conta">
+            <p className={label}>Conta</p>
+            <ul className="mt-4 space-y-3 text-sm text-neutral-400">
+              <li><Link className={footerLink} to="/login">Entrar</Link></li>
+              <li><Link className={footerLink} to="/cadastro">Criar conta</Link></li>
+              <li><Link className={footerLink} to="/recuperar-senha">Esqueci minha senha</Link></li>
+            </ul>
+          </nav>
+        </div>
+        <div className="border-t border-line">
+          <div className={cx(container, 'flex flex-col items-center justify-between gap-3 py-6 text-xs text-neutral-500 sm:flex-row')}>
+            <div className="text-center sm:text-left">
+              <p>© {new Date().getFullYear()} Gastei Tudo. Todos os direitos reservados.</p>
+              <p className="mt-1 text-[10px] text-neutral-600">Empresa criadora: Nexora</p>
+            </div>
+            <button type="button" onClick={scrollToTop} className="inline-flex items-center gap-1.5 transition hover:text-neutral-200">
+              Voltar ao topo <ArrowUp className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
       </footer>
